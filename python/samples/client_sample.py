@@ -7,6 +7,7 @@ import sys
 
 import numpy as np
 import soundfile as sf
+from azure.identity import DefaultAzureCredential
 from azure.core.credentials import AzureKeyCredential
 from dotenv import load_dotenv
 from scipy.signal import resample
@@ -163,10 +164,10 @@ def get_env_var(var_name: str) -> str:
 
 
 async def with_azure_openai(audio_file_path: str, out_dir: str):
-    endpoint = get_env_var("AZURE_OPENAI_ENDPOINT")
-    key = get_env_var("AZURE_OPENAI_API_KEY")
-    deployment = get_env_var("AZURE_OPENAI_DEPLOYMENT")
-    async with RTClient(url=endpoint, key_credential=AzureKeyCredential(key), azure_deployment=deployment) as client:
+    AZURE_OPENAI_API_VERSION="2024-10-01-preview"
+    AZURE_OPENAI_ENDPOINT="https://bryce-rnd-swedencentral.openai.azure.com/"
+    AZURE_OPENAI_DEPLOYMENT="gpt-4o-realtime-preview"
+    async with RTClient(url=AZURE_OPENAI_ENDPOINT, token_credential=DefaultAzureCredential(), azure_deployment=AZURE_OPENAI_DEPLOYMENT) as client:
         await run(client, audio_file_path, out_dir)
 
 

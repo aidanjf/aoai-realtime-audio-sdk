@@ -55,7 +55,7 @@ class RTLowLevelClient:
     async def _get_auth(self):
         if self._token_credential:
             scope = "https://cognitiveservices.azure.com/.default"
-            token = await self._token_credential.get_token(scope)
+            token = self._token_credential.get_token(scope)
             return {"Authorization": f"Bearer {token.token}"}
         elif self._key_credential:
             return {"api-key": self._key_credential.key}
